@@ -17,7 +17,7 @@
           <router-link style="color: black; text-decoration: none" to="/">
             <div class="side mt-2">
               <img src="../../assets/fork32.png" style="max-width: 50px" alt />
-              Food Items
+              Fresh Products
             </div></router-link
           >
           <router-link
@@ -35,7 +35,7 @@
           >
           <div class="side mt-2" @click="$bvModal.show('bv-modal-examples')">
             <img src="../../assets/add32.png" style="max-width: 50px" alt />
-            Add Item
+            Add Product
             <b-modal id="bv-modal-examples" hide-footer style>
               <template v-slot:modal-title>Add Item</template>
               <b-form v-on:submit.prevent>
@@ -118,7 +118,7 @@
         >
       </b-sidebar>
     </div>
-    <div class="nav2">Food Items</div>
+    <div class="nav2">Fresh Products</div>
 
     <!-- <div v-show="isSearch" class="nav3 searchIcon" @click="searchProduct()">
       <img src="../../assets/search.png" alt />
@@ -127,64 +127,67 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
-import formMixins from '../mixins/formMixins'
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import formMixins from "../mixins/formMixins";
 export default {
   mixins: [formMixins],
   // name: 'NavTop',
   data() {
     return {
-      counter: 0
+      counter: 0,
       // todayIncome: 0
-    }
+    };
+  },
+  created() {
+    this.getProducts();
   },
   methods: {
     ...mapActions([
-      'logout',
-      'searchProductStore',
-      'addProducts',
-      'getProducts'
+      "logout",
+      "searchProductStore",
+      "addProducts",
+      "getProducts",
     ]),
-    ...mapMutations(['searchMutation']),
+    ...mapMutations(["searchMutation"]),
     handleFile() {
-      this.form.product_image = event.target.files[0]
-      console.log(event.target.files)
+      this.form.product_image = event.target.files[0];
+      console.log(event.target.files);
     },
     userPage() {
-      this.$router.push('/user')
+      this.$router.push("/user");
     },
     addProduct() {
-      const data = new FormData()
-      data.append('product_name', this.form.product_name)
-      data.append('category_id', this.form.category_id)
-      data.append('product_price', this.form.product_price)
-      data.append('product_status', this.form.product_status)
-      data.append('product_image', this.form.product_image)
+      const data = new FormData();
+      data.append("product_name", this.form.product_name);
+      data.append("category_id", this.form.category_id);
+      data.append("product_price", this.form.product_price);
+      data.append("product_status", this.form.product_status);
+      data.append("product_image", this.form.product_image);
 
       this.addProducts(data)
         .then((response) => {
-          console.log(response)
+          console.log(response);
           this.$bvToast.toast(`${response.msg}`, {
-            title: 'Info ',
-            variant: 'info',
-            solid: true
-          })
-          this.getProducts()
+            title: "Info ",
+            variant: "info",
+            solid: true,
+          });
+          this.getProducts();
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           this.$bvToast.toast(`${error.data.msg}`, {
-            title: 'Info ',
-            variant: 'danger',
-            solid: true
-          })
-        })
-    }
+            title: "Info ",
+            variant: "danger",
+            solid: true,
+          });
+        });
+    },
   },
   computed: {
-    ...mapGetters({ user: 'getUser' })
-  }
-}
+    ...mapGetters({ user: "getUser" }),
+  },
+};
 </script>
 
 <style scoped>
@@ -194,7 +197,7 @@ export default {
   display: flex;
   flex-flow: row wrap;
   font-size: 30px;
-  font-family: 'Montaga', serif, sans-serif;
+  font-family: "Montaga", serif, sans-serif;
   text-align: center;
   background: #ffffff;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
@@ -230,7 +233,7 @@ export default {
 
 .side {
   text-align: left;
-  font-family: 'Montaga', serif, sans-serif;
+  font-family: "Montaga", serif, sans-serif;
   font-size: 15px;
   margin: auto;
   padding: 15px 0px;

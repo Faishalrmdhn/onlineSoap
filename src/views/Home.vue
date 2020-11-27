@@ -75,7 +75,9 @@
                         <img src="../assets/tick.png" alt />
                         </p>-->
                         <!-- pakai div dan style utk selected -->
-                        <b-card-text>Rp.{{ item.product_price }}</b-card-text>
+                        <b-card-text
+                          >Rp.{{ formatPrice(item.product_price) }}</b-card-text
+                        >
 
                         <b-button
                           size="sm"
@@ -114,7 +116,10 @@
                         >Are you sure want to delete this product?</template
                       >
                       <b-row class="text-center mt-5"
-                        ><b-col cols="12" md="6"
+                        ><b-col
+                          cols="12"
+                          md="6"
+                          @click="$bvModal.hide('modalDelete')"
                           ><b-button
                             @click="deleteProduct()"
                             block
@@ -162,26 +167,30 @@
                         <input type="file" @change="handleFile" />
                         <br />
 
-                        <div @click="$bvModal.hide('bv-modal-update')">
-                          <b-button
-                            type="button"
-                            class="mt-3"
-                            variant="info"
-                            block
-                            @click="patchProduct()"
-                            v-show="isUpdate"
-                            >Update</b-button
-                          >
-                        </div>
-                        <div>
-                          <b-button
-                            class="mt-3"
-                            variant="secondary"
-                            block
-                            @click="$bvModal.hide('bv-modal-update')"
-                            >Cancel</b-button
-                          >
-                        </div>
+                        <b-row @click="$bvModal.hide('bv-modal-update')">
+                          <b-col>
+                            <b-button
+                              class="mt-3"
+                              variant="info"
+                              block
+                              @click="patchProduct()"
+                              v-show="isUpdate"
+                              >Update</b-button
+                            >
+                          </b-col>
+                        </b-row>
+
+                        <b-row>
+                          <b-col>
+                            <b-button
+                              class="mt-3"
+                              variant="secondary"
+                              block
+                              @click="$bvModal.hide('bv-modal-update')"
+                              >Cancel</b-button
+                            >
+                          </b-col>
+                        </b-row>
                       </b-form>
                     </b-modal>
                   </b-row>
@@ -549,6 +558,10 @@ export default {
       };
       this.checkOutStore(setCart);
     },
+    patchProduct(data) {
+      // BELUM SELESAI
+      console.log(data);
+    },
     downloadPDF() {
       const doc = new JsPDF();
       doc.setFontSize(14);
@@ -575,12 +588,14 @@ export default {
     },
     getId(data) {
       this.id = data.product_id;
-      console.log("dibawah");
-      console.log(this.id);
     },
     deleteProduct() {
       this.deleteProducts(this.id);
       this.getProducts();
+    },
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
   },
 };
