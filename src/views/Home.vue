@@ -150,29 +150,27 @@
                           <b-input
                             type="number"
                             v-model="form.product_price"
-                            :placeholder="form.product_price"
+                            placeholder="Product Price"
                         /></b-form-group>
                         <b-form-group label="Product Status"
                           ><b-input
                             type="number"
                             v-model="form.product_status"
-                            :placeholder="form.product_status"
+                            placeholder="Product Status"
                         /></b-form-group>
                         <b-form-group label="Product Category"
                           ><b-input
                             type="number"
                             v-model="form.category_id"
-                            :placeholder="form.category_id"
+                            placeholder="Category Id"
                         /></b-form-group>
                         <b-form-group
                           ><b-form-file
-                            v-model="form.product_image"
                             @change="handleFile"
                             placeholder="Choose a file or drop it here..."
                             drop-placeholder="Drop file here..."
                           ></b-form-file
                         ></b-form-group>
-                        <!-- <input type="file" @change="handleFile" /> -->
 
                         <b-row @click="$bvModal.hide('bv-modal-update')">
                           <b-col>
