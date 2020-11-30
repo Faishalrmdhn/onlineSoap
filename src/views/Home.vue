@@ -139,33 +139,40 @@
                     <b-modal id="bv-modal-update" hide-footer style>
                       <template v-slot:modal-title>Update Item</template>
                       <b-form v-on:submit.prevent>
-                        <b-input
-                          type="text"
-                          v-model="form.product_name"
-                          placeholder="Product Name"
-                        />
-                        <br />
-                        <b-input
-                          type="number"
-                          v-model="form.product_price"
-                          placeholder="Product Price"
-                        />
-                        <br />
-                        <b-input
-                          type="number"
-                          v-model="form.product_status"
-                          placeholder="Product status"
-                        />
-                        <br />
-                        <b-input
-                          type="number"
-                          v-model="form.category_id"
-                          placeholder="Product category id"
-                        />
-                        <br />
-
-                        <input type="file" @change="handleFile" />
-                        <br />
+                        <b-form-group label="Product Name">
+                          <b-input
+                            type="text"
+                            v-model="form.product_name"
+                            :placeholder="form.product_name"
+                          />
+                        </b-form-group>
+                        <b-form-group label="Product Price">
+                          <b-input
+                            type="number"
+                            v-model="form.product_price"
+                            :placeholder="form.product_price"
+                        /></b-form-group>
+                        <b-form-group label="Product Status"
+                          ><b-input
+                            type="number"
+                            v-model="form.product_status"
+                            :placeholder="form.product_status"
+                        /></b-form-group>
+                        <b-form-group label="Product Category"
+                          ><b-input
+                            type="number"
+                            v-model="form.category_id"
+                            :placeholder="form.category_id"
+                        /></b-form-group>
+                        <b-form-group
+                          ><b-form-file
+                            v-model="form.product_image"
+                            @change="handleFile"
+                            placeholder="Choose a file or drop it here..."
+                            drop-placeholder="Drop file here..."
+                          ></b-form-file
+                        ></b-form-group>
+                        <!-- <input type="file" @change="handleFile" /> -->
 
                         <b-row @click="$bvModal.hide('bv-modal-update')">
                           <b-col>
@@ -174,7 +181,6 @@
                               variant="info"
                               block
                               @click="patchProduct()"
-                              v-show="isUpdate"
                               >Update</b-button
                             >
                           </b-col>
@@ -403,7 +409,7 @@ export default {
       search: "",
       alert: false,
       isMsg: "",
-      isUpdate: false,
+      // isUpdate: false,
       product_id: "",
       delAlert: false,
       delMsg: "",
@@ -558,9 +564,45 @@ export default {
       };
       this.checkOutStore(setCart);
     },
-    patchProduct(data) {
-      // BELUM SELESAI
+    setProduct(data) {
       console.log(data);
+      this.form = {
+        product_name: data.product_name,
+        product_price: data.product_price,
+        product_status: data.product_status,
+        category_id: data.category_id,
+        product_image: data.product_image,
+      };
+      this.product_id = data.product_id;
+    },
+    patchProduct() {
+      // BELUM SELESAI
+      console.log(this.product_id);
+      console.log(this.form);
+      this.isUpdate = false;
+      const data = new FormData();
+      data.append("product_name", this.form.product_name);
+      data.append("category_id", this.form.category_id);
+      data.append("product_price", this.form.product_price);
+      data.append("product_status", this.form.product_status);
+      data.append("product_image", this.form.product_image);
+      const setData = {
+        product_id: this.product_id,
+        form: data,
+      };
+      this.updateProducts(setData)
+        .then((response) => {
+          console.log(response);
+          this.alert = true;
+          this.isMsg = response.msg;
+          setTimeout(() => {
+            this.alert = false;
+          }, 2000);
+          this.getProducts();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     downloadPDF() {
       const doc = new JsPDF();
